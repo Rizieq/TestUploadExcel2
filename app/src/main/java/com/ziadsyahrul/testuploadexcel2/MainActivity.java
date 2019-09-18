@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         initDB();
-
         readExcelFileFromAssets();
+
         if (Common.cartRepository.getCartItems() != null) {
             getData();
         } else {

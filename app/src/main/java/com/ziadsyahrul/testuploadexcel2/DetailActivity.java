@@ -26,7 +26,6 @@ public class DetailActivity extends AppCompatActivity {
     Button btn_update, btn_delete;
 
 
-
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
