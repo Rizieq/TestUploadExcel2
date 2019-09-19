@@ -1,15 +1,20 @@
 package com.ziadsyahrul.testuploadexcel2;
 
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.ziadsyahrul.testuploadexcel2.Database.Common;
 import com.ziadsyahrul.testuploadexcel2.Database.DataSource.CartRepository;
@@ -39,7 +44,9 @@ import io.reactivex.schedulers.Schedulers;
 public class MainActivity extends AppCompatActivity {
 
     String TAG = "main";
-    private TextView textView;
+    /*private TextView textView;*/
+    EditText edt_date, edt_detail;
+    FloatingActionButton floating_add;
 
     RecyclerView recycler_main;
     MainAdapter mainAdapter;
@@ -53,10 +60,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         compositeDisposable = new CompositeDisposable();
-        textView = findViewById(R.id.textView);
+        /*textView = findViewById(R.id.textView);*/
+
+        // todo add data
         recycler_main = findViewById(R.id.recycler_main);
         recycler_main.setLayoutManager(new LinearLayoutManager(this));
         recycler_main.setHasFixedSize(true);
+
+        floating_add = findViewById(R.id.floating_add);
+
+        floating_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddDialog();
+            }
+        });
 
 
         initDB();
@@ -69,6 +87,34 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Data Tidak Ada", Toast.LENGTH_SHORT).show();
         }
 
+
+    }
+
+    private void showAddDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add New Data");
+
+        View view = LayoutInflater.from(this).inflate(R.layout.add_dialog,null);
+
+        edt_date = view.findViewById(R.id.edt_date);
+        edt_detail = view.findViewById(R.id.edt_detail);
+        builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Cart cartItem = new Cart();
+                cartItem.date = edt_date.getText().toString();
+                cartItem.det = edt_detail.getText().toString();
+                Common.cartRepository.insertToCart(cartItem);
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setView(view);
+        builder.show();
 
     }
 
@@ -117,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
             Iterator<Row> rowIter = mySheet.rowIterator();
             int rowno = 0;
-            textView.append("\n");
+            /*textView.append("\n");*/
             while (rowIter.hasNext()) {
                 Log.e(TAG, "row no : " + rowno);
                 HSSFRow myRow = (HSSFRow) rowIter.next();
@@ -142,9 +188,11 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(TAG, " Index : " + myCell.getColumnIndex() + " -- " + myCell.toString());
                     }
 
-                    textView.append(sno + " -- " + date + " -- " + det + "\n");
+                    /*textView.append(sno + " -- " + date + " -- " + det + "\n");*/
 
-                    if (Common.cartRepository.getCartItems() == Common.cartRepository.getCartItems()) {
+                    // TODO GET DATA != akan mengambil data lagi ketika aplikasi di buka tetapi == tidak akan mengambil data ketika aplikasi di buka
+
+                    if (Common.cartRepository.getCartItems() != Common.cartRepository.getCartItems()) {
 
                         try {
 

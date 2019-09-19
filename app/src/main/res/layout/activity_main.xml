@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
 
-
+<!--
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -16,14 +16,20 @@
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:lineSpacingExtra="2dp"
-        android:text="Excel Data Below -" />
+        android:text="Excel Data Below -" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
     </androidx.recyclerview.widget.RecyclerView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floating_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end|bottom"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/ic_add_black_24dp"/>
 
 </LinearLayout>
